@@ -3,7 +3,7 @@ const fs = require("fs");
 const minimist = require("minimist");
 
 const args = minimist(process.argv.slice(2));
-const PORT = args.port || 3000;
+const PORT = args.port || 5000;
 
 let homeContent = "";
 let projectContent = "";
