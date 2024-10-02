@@ -1,11 +1,14 @@
 const http = require("http");
 const fs = require("fs");
+const minimist = require("minimist");
+
+const args = minimist(process.argv.slice(2));
+const PORT = args.port || 3000;
 
 let homeContent = "";
 let projectContent = "";
 let registrationContent = "";
 
-// Read HTML files synchronously to ensure content is loaded before server starts
 fs.readFile("./http-server/home.html", (err, home) => {
     if (err) {
         throw err;
@@ -47,7 +50,6 @@ const server = http.createServer((request, response) => {
     }
 });
 
-// Start server and log to console
-server.listen(5000, () => {
-    console.log("Server is listening on port 3000");
+server.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
