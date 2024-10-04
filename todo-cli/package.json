@@ -5,7 +5,13 @@
   "scripts": {
     "test": "jest",
     "prepare": "husky install"
-  },
+},
+"lint-staged": {
+  "*.js": [
+    "eslint",
+    "prettier --write ."
+  ]
+},
   "author": "Hyper",
   "license": "ISC",
   "description": "",
