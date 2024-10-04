@@ -4,7 +4,7 @@
   "main": "todo.js",
   "scripts": {
     "test": "jest",
-    "prepare": "cd .. && husky install todo-cli/.husky"
+    "prepare": "husky install"
   },
   "author": "Hyper",
   "license": "ISC",
