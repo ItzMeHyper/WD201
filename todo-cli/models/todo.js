@@ -85,9 +85,15 @@ module.exports = (sequelize, DataTypes) => {
         dueDate.getDate() === today.getDate()
       ) {
         return `${this.id}. ${checkbox} ${this.title}`; // Don't show due date if it's today
-      } else {
-        return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`; // Show due date otherwise
       }
+
+      // For completed past-due items, show the due date
+      if (this.completed && dueDate < today) {
+        return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`; // Show due date for completed past-due
+      }
+
+      // For other items, show the due date
+      return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
     }
   }
 
