@@ -1,67 +1,20 @@
+// __tests__/todo.js
 /* eslint-disable no-undef */
-const todoList = require("../todo");
+const db = require("../models");
 
-const { all, markAsComplete, add, overdue, dueToday, dueLater } = todoList();
-
-describe("Todolist test suite", () => {
-  beforeEach(() => {
-    // Clear the todos before each test
-    all.length = 0;
+describe("Todolist Test Suite", () => {
+  beforeAll(async () => {
+    await db.sequelize.sync({ force: true });
   });
 
-  test("Should add a new todo", () => {
-    expect(all.length).toBe(0);
-    add({
+  test("Should add new todo", async () => {
+    const todoItemsCount = await db.Todo.count();
+    await db.Todo.addTask({
       title: "Test todo",
       completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
+      dueDate: new Date(),
     });
-    expect(all.length).toBe(1);
-  });
-
-  test("Should mark a todo as complete", () => {
-    add({
-      title: "Incomplete todo",
-      completed: false,
-      dueDate: new Date().toLocaleDateString("en-CA"),
-    });
-    expect(all[0].completed).toBe(false);
-    markAsComplete(0);
-    expect(all[0].completed).toBe(true);
-  });
-
-  test("Should retrieve overdue items", () => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    add({
-      title: "Overdue todo",
-      completed: false,
-      dueDate: yesterday.toLocaleDateString("en-CA"),
-    });
-    expect(overdue().length).toBe(1);
-    expect(overdue()[0].title).toBe("Overdue todo");
-  });
-
-  test("Should retrieve due today items", () => {
-    const today = new Date().toLocaleDateString("en-CA");
-    add({
-      title: "Due today todo",
-      completed: false,
-      dueDate: today,
-    });
-    expect(dueToday().length).toBe(1);
-    expect(dueToday()[0].title).toBe("Due today todo");
-  });
-
-  test("Should retrieve due later items", () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    add({
-      title: "Due later todo",
-      completed: false,
-      dueDate: tomorrow.toLocaleDateString("en-CA"),
-    });
-    expect(dueLater().length).toBe(1);
-    expect(dueLater()[0].title).toBe("Due later todo");
+    const newTodoItemsCount = await db.Todo.count();
+    expect(newTodoItemsCount).toBe(todoItemsCount + 1);
   });
 });

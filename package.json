@@ -3,6 +3,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "eslint-plugin-jest": "^28.8.3",
     "pg": "^8.13.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.4"

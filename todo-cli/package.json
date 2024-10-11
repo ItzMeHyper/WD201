@@ -3,15 +3,17 @@
   "version": "1.0.0",
   "main": "todo.js",
   "scripts": {
-    "test": "jest",
+    "db:create:test": "NODE_ENV=test npx sequelize-cli db:create",
+    "pretest": "SET NODE_ENV=test npx sequelize-cli db:drop && SET NODE_ENV=test npx sequelize-cli db:create",
+    "test": "NODE_ENV=test jest --detectOpenHandles",
     "prepare": "husky install"
-},
-"lint-staged": {
-  "*.js": [
-    "eslint",
-    "prettier --write"
-  ]
-},
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint",
+      "prettier --write"
+    ]
+  },
   "author": "Hyper",
   "license": "ISC",
   "description": "",
@@ -22,6 +24,11 @@
     "husky": "^8.0.3",
     "jest": "^29.7.0",
     "lint-staged": "^15.2.10",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "sequelize-cli": "^6.6.2"
+  },
+  "dependencies": {
+    "eslint-plugin-jest": "^28.8.3",
+    "minimist": "^1.2.8"
   }
 }
