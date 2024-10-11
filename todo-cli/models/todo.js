@@ -1,8 +1,5 @@
 "use strict";
-const {
-  Model,
-  Op, // Import Op here
-} = require("sequelize");
+const { Model, Op } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
@@ -39,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       return await Todo.findAll({
         where: {
           dueDate: {
-            [Op.lt]: today, // Use Op here
+            [Op.lt]: today,
           },
           completed: false,
         },
@@ -65,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       return await Todo.findAll({
         where: {
           dueDate: {
-            [Op.gt]: today, // Use Op here
+            [Op.gt]: today,
           },
           completed: false,
         },
@@ -78,7 +75,19 @@ module.exports = (sequelize, DataTypes) => {
 
     displayableString() {
       const checkbox = this.completed ? "[x]" : "[ ]";
-      return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
+      const today = new Date();
+      const dueDate = new Date(this.dueDate);
+
+      // Check if the due date is today
+      if (
+        dueDate.getFullYear() === today.getFullYear() &&
+        dueDate.getMonth() === today.getMonth() &&
+        dueDate.getDate() === today.getDate()
+      ) {
+        return `${this.id}. ${checkbox} ${this.title}`; // Don't show due date if it's today
+      } else {
+        return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`; // Show due date otherwise
+      }
     }
   }
 
